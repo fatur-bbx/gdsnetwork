@@ -3,6 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\Bts_model;
+use App\Models\Gangguan_model;
+use App\Models\Pelanggan_model;
 
 use function PHPUnit\Framework\isNull;
 
@@ -16,6 +18,17 @@ class Home extends BaseController
         ];
         return view('pages/index', $data);
     }
+
+
+
+
+
+    // BTS
+
+
+
+
+
 
     public function bts()
     {
@@ -90,6 +103,82 @@ class Home extends BaseController
         } else {
             session()->setFlashdata('berhasil', 'Data BTS berhasil diubah!');
             return redirect()->to(base_url('index.php/bts'));
+        }
+    }
+
+
+
+
+    // GANGGUAN
+
+
+
+
+    public function gangguan()
+    {
+        helper(['session']);
+        $gangguan = new Gangguan_model();
+        $pelanggan = new Pelanggan_model();
+        $data = [
+            "judul" => "Gangguan",
+            "data_gangguan" => $gangguan->findAll(),
+            "data_pelanggan" => $pelanggan->findAll(),
+            "Pelanggan_model" => $pelanggan,
+        ];
+
+        if (isset($_POST['tambahBTN'])) {
+            return view('pages/gangguan/tambah', $data);
+        } else if(isset($_POST['hapusBTN'])){
+            $masuk = $gangguan->delete($_POST['id']);
+            if ($masuk === false) {
+                $errors = $gangguan->errors();
+                session()->setFlashdata('error', $errors);
+                return redirect()->to(base_url('index.php/gangguan'));
+            } else {
+                session()->setFlashdata('berhasil', 'Data Gangguan berhasil dihapus!');
+                return redirect()->to(base_url('index.php/gangguan'));
+            }
+        } else if(isset($_POST['verifikasi'])) {
+            $masuk = $gangguan->update($_POST['id'],
+            [
+                'tanggal_close' => date('Y-m-d'),
+                'status' => 1
+            ]);
+            if ($masuk === false) {
+                $errors = $gangguan->errors();
+                session()->setFlashdata('error', $errors);
+                return redirect()->to(base_url('index.php/gangguan'));
+            } else {
+                session()->setFlashdata('berhasil', 'Data Gangguan berhasil diverifikasi!');
+                return redirect()->to(base_url('index.php/gangguan'));
+            }
+        }else {
+            return view('pages/gangguan/index', $data);
+        }
+    }
+
+    public function tambahGangguan()
+    {
+        helper(['session']);
+        $gangguan = new Gangguan_model();
+        $uuid = service('uuid');
+        $uuid4 = $uuid->uuid4();
+        $string = $uuid4->toString();
+        $masuk = $gangguan->insert([
+            "id_gangguan" => $string,
+            "id_pelanggan" => $_POST['namaPelanggan'],
+            "laporan" => $_POST['laporanGangguan'],
+            "tanggal_open" => $_POST['tanggalOpen'],
+            "status" => "0"
+        ]);
+        if ($masuk === false) {
+            $errors = $gangguan->errors();
+            dd($errors);die;
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/gangguan'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Gangguan berhasil ditambahkan!');
+            return redirect()->to(base_url('index.php/gangguan'));
         }
     }
 }

@@ -65,7 +65,7 @@
 
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item <?= ($judul == "Gangguan") ? "active" : "" ?>">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="<?= base_url('index.php/gangguan')?>">
                     <i class="fas fa-fw fa-hammer"></i>
                     <span>Gangguan</span></a>
             </li>
