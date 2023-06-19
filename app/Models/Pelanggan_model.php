@@ -16,7 +16,6 @@ class Pelanggan_model extends Model {
         'nama'     => 'required|min_length[3]',
         'alamat'        => 'required|min_length[3]',
         'no_hp'     => 'required|min_length[10]',
-        'email'        => 'required|valid_email|is_unique[pelanggan.email]|min_length[6]',
         'id_bts'        => 'required',
         'id_perangkat'     => 'required',
         'tanggal'        => 'required|valid_date',
@@ -35,10 +34,6 @@ class Pelanggan_model extends Model {
         'no_hp'        => [
             'required' => 'Nomor HP harus diisi!',
             'min_length[10]' => 'Minimal 10 Karakter!'
-        ],
-        'email'        => [
-            'required' => 'Email harus diisi!',
-            'valid_email' => 'Hanya bisa diisi dengan email yang valid!'
         ],
         'id_bts'        => [
             'required' => 'BTS harus diisi!'

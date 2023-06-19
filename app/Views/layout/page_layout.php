@@ -77,7 +77,7 @@
             </li>
 
             <li class="nav-item <?= ($judul == "Pelanggan") ? "active" : "" ?>">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="<?= base_url('index.php/pelanggan')?>">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Pelanggan</span></a>
             </li>

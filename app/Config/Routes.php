@@ -58,6 +58,13 @@ $routes->get('/perangkat','Home::perangkat');
 $routes->post('/perangkat','Home::perangkat');
 $routes->post('/perangkat/tambahPerangkat','Home::tambahPerangkat');
 $routes->post('/perangkat/updatePerangkat','Home::updatePerangkat');
+
+
+// Pelanggan
+$routes->get('/pelanggan','Home::pelanggan');
+$routes->post('/pelanggan','Home::pelanggan');
+$routes->post('/pelanggan/tambahPelanggan','Home::tambahPelanggan');
+$routes->post('/pelanggan/updatePelanggan','Home::updatePelanggan');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

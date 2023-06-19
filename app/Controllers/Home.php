@@ -175,7 +175,7 @@ class Home extends BaseController
         ]);
         if ($masuk === false) {
             $errors = $gangguan->errors();
-            dd($errors);die;
+            
             session()->setFlashdata('error', $errors);
             return redirect()->to(base_url('index.php/gangguan'));
         } else {
@@ -390,6 +390,101 @@ class Home extends BaseController
         } else {
             session()->setFlashdata('berhasil', 'Data Perangkat berhasil diubah!');
             return redirect()->to(base_url('index.php/perangkat'));
+        }
+    }
+
+    // Pelanggan
+
+    public function pelanggan()
+    {
+        helper(['session']);
+        $pelanggan = new Pelanggan_model();
+        $bts = new Bts_model();
+        $perangkat = new Perangkat_model();
+        $paket = new Paket_model();
+        $data = [
+            "judul" => "Pelanggan",
+            "data_pelanggan" => $pelanggan->findAll(),
+            "bts_model" => $bts,
+            "perangkat_model" => $perangkat,
+            "paket_model" => $paket
+        ];
+
+        if (isset($_POST['tambahBTN'])) {
+            return view('pages/pelanggan/tambah', $data);
+        } else if(isset($_POST['hapusBTN'])){
+            $masuk = $pelanggan->delete($_POST['id_pelanggan']);
+            if ($masuk === false) {
+                $errors = $pelanggan->errors();
+                session()->setFlashdata('error', $errors);
+                return redirect()->to(base_url('index.php/pelanggan'));
+            } else {
+                session()->setFlashdata('berhasil', 'Data Pelanggan berhasil dihapus!');
+                return redirect()->to(base_url('index.php/pelanggan'));
+            }
+        } else if(isset($_POST['updateBTN'])) {
+            $dataAll = [
+                "judul" => "Pelanggan",
+                "dataEdit" => $pelanggan->find($_POST['id_pelanggan']),
+                "bts_model" => $bts,
+                "perangkat_model" => $perangkat,
+                "paket_model" => $paket
+            ];
+            return view('pages/pelanggan/update', $dataAll);
+        } else {
+            return view('pages/pelanggan/index', $data);
+        }
+    }
+
+    public function tambahPelanggan()
+    {
+        helper(['session']);
+        $pelanggan = new Pelanggan_model();
+        $uuid = service('uuid');
+        $uuid4 = $uuid->uuid4();
+        $string = $uuid4->toString();
+        $masuk = $pelanggan->insert([
+            "id_pelanggan" => $string,
+            "nama" => $_POST['nama'],
+            "alamat" => $_POST['alamat'],
+            "no_hp" => $_POST['no_hp'],
+            "email" => $_POST['email'],
+            "id_bts" => $_POST['id_bts'],
+            "id_perangkat" => $_POST['id_perangkat'],
+            "tanggal" => date('Y-m-d'),
+            "id_paket" => $_POST['id_paket']
+        ]);
+        if ($masuk === false) {
+            $errors = $pelanggan->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/pelanggan'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Pelanggan berhasil ditambahkan!');
+            return redirect()->to(base_url('index.php/pelanggan'));
+        }
+    }
+
+    public function updatePelanggan()
+    {
+        helper(['session']);
+        $pelanggan = new Pelanggan_model();
+        $masuk = $pelanggan->update($_POST['id_pelanggan'],[
+            "nama" => $_POST['nama'],
+            "alamat" => $_POST['alamat'],
+            "no_hp" => $_POST['no_hp'],
+            "email" => $_POST['email'],
+            "id_bts" => $_POST['id_bts'],
+            "id_perangkat" => $_POST['id_perangkat'],
+            "id_paket" => $_POST['id_paket']
+        ]);
+        if ($masuk === false) {
+            $errors = $pelanggan->errors();
+            dd($errors);die;
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/pelanggan'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Pelanggan berhasil diubah!');
+            return redirect()->to(base_url('index.php/pelanggan'));
         }
     }
 }
