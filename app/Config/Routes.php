@@ -72,6 +72,13 @@ $routes->get('/level','Home::level');
 $routes->post('/level','Home::level');
 $routes->post('/level/tambahLevel','Home::tambahLevel');
 $routes->post('/level/updateLevel','Home::updateLevel');
+
+
+// Admin
+$routes->get('/admin','Home::admin');
+$routes->post('/admin','Home::admin');
+$routes->post('/admin/tambahAdmin','Home::tambahAdmin');
+$routes->post('/admin/updateAdmin','Home::updateAdmin');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

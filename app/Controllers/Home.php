@@ -8,6 +8,7 @@ use App\Models\Paket_model;
 use App\Models\Pelanggan_model;
 use App\Models\Perangkat_model;
 use App\Models\User_level_model;
+use App\Models\Users_model;
 
 use function PHPUnit\Framework\isNull;
 
@@ -561,6 +562,93 @@ class Home extends BaseController
         } else {
             session()->setFlashdata('berhasil', 'Data Level berhasil diubah!');
             return redirect()->to(base_url('index.php/level'));
+        }
+    }
+
+
+
+    // Admin
+
+    public function admin()
+    {
+        helper(['session']);
+        $user = new Users_model();
+        $level = new User_level_model();
+        $data = [
+            "judul" => "Admin",
+            "data_user" => $user->findAll(),
+            "level" => $level
+        ];
+
+        if (isset($_POST['tambahBTN'])) {
+            return view('pages/admin/tambah', $data);
+        } else if(isset($_POST['hapusBTN'])){
+            $masuk = $user->delete($_POST['id_user']);
+            if ($masuk === false) {
+                $errors = $user->errors();
+                session()->setFlashdata('error', $errors);
+                return redirect()->to(base_url('index.php/admin'));
+            } else {
+                session()->setFlashdata('berhasil', 'Data Admin berhasil dihapus!');
+                return redirect()->to(base_url('index.php/admin'));
+            }
+        } else if(isset($_POST['updateBTN'])) {
+            $dataAll = [
+                "judul" => "Admin",
+                "dataEdit" => $user->find($_POST['id_user']),
+                "level" => $level
+            ];
+            return view('pages/admin/update', $dataAll);
+        } else {
+            return view('pages/admin/index', $data);
+        }
+    }
+
+    public function tambahAdmin()
+    {
+        helper(['session']);
+        $user = new Users_model();
+        $level = new User_level_model();
+        $uuid = service('uuid');
+        $uuid4 = $uuid->uuid4();
+        $string = $uuid4->toString();
+        $masuk = $user->insert([
+            "id_user" => $string,
+            "email" => $_POST['email'],
+            "password" => $_POST['password'],
+            "nama" => $_POST['nama'],
+            "id_level" => $_POST['id_level'],
+            "level" => $level
+        ]);
+        if ($masuk === false) {
+            $errors = $user->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/admin'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data User berhasil ditambahkan!');
+            return redirect()->to(base_url('index.php/admin'));
+        }
+    }
+
+    public function updateAdmin()
+    {
+        helper(['session']);
+        $user = new Users_model();
+        $level = new User_level_model();
+        $masuk = $user->update($_POST['id_user'],[
+            "email" => $_POST['email'],
+            "password" => $_POST['password'],
+            "nama" => $_POST['nama'],
+            "id_level" => $_POST['id_level'],
+            "level" => $level
+        ]);
+        if ($masuk === false) {
+            $errors = $user->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/admin'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data User berhasil diubah!');
+            return redirect()->to(base_url('index.php/admin'));
         }
     }
 }

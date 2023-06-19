@@ -5,12 +5,13 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class Users_model extends Model {
+    protected $uuidFields = ['id_user'];
     protected $table      = 'users';
     protected $primaryKey = 'id_user';
     protected $useSoftDeletes = false;
     protected $useTimestamps = false;
  
-    protected $allowedFields = ['email','password','nama','id_level'];
+    protected $allowedFields = ['id_user','email','password','nama','id_level'];
 
     protected $validationRules    = [
         'email'     => 'required|min_length[3]',
