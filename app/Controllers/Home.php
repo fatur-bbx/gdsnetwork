@@ -9,14 +9,19 @@ use App\Models\Pelanggan_model;
 use App\Models\Perangkat_model;
 use App\Models\User_level_model;
 use App\Models\Users_model;
-
-use function PHPUnit\Framework\isNull;
+use CodeIgniter\Session\Session;
 
 class Home extends BaseController
 {
 
     public function index()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         $data = [
             "judul" => "Dashboard"
         ];
@@ -36,6 +41,13 @@ class Home extends BaseController
 
     public function bts()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
+
         helper(['session']);
         $bts = new Bts_model();
         $data = [
@@ -44,13 +56,13 @@ class Home extends BaseController
         ];
         if (isset($_POST['tambahBTN'])) {
             return view('pages/bts/tambah', $data);
-        } else if(isset($_POST['updateBTN'])) {
+        } else if (isset($_POST['updateBTN'])) {
             $dataAll = [
                 "judul" => "BTS",
                 "dataEdit" => $bts->find($_POST['id']),
             ];
             return view('pages/bts/update', $dataAll);
-        } else if(isset($_POST['hapusBTN'])){
+        } else if (isset($_POST['hapusBTN'])) {
             $masuk = $bts->delete($_POST['id']);
             if ($masuk === false) {
                 $errors = $bts->errors();
@@ -67,6 +79,13 @@ class Home extends BaseController
 
     public function tambahBTS()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
+
         helper(['session']);
         $bts = new Bts_model();
         $uuid = service('uuid');
@@ -91,12 +110,18 @@ class Home extends BaseController
 
     public function updateBTS()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $bts = new Bts_model();
         $id = $_POST['idbts'];
         $namaBTS = $_POST['namaBTS'];
         $alamatBTS = $_POST['alamatBTS'];
-        $masuk = $bts->update($id,[
+        $masuk = $bts->update($id, [
             "nama_bts" => $namaBTS,
             "alamat" => $alamatBTS
         ]);
@@ -120,6 +145,14 @@ class Home extends BaseController
 
     public function gangguan()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
+
+
         helper(['session']);
         $gangguan = new Gangguan_model();
         $pelanggan = new Pelanggan_model();
@@ -132,7 +165,7 @@ class Home extends BaseController
 
         if (isset($_POST['tambahBTN'])) {
             return view('pages/gangguan/tambah', $data);
-        } else if(isset($_POST['hapusBTN'])){
+        } else if (isset($_POST['hapusBTN'])) {
             $masuk = $gangguan->delete($_POST['id']);
             if ($masuk === false) {
                 $errors = $gangguan->errors();
@@ -142,12 +175,14 @@ class Home extends BaseController
                 session()->setFlashdata('berhasil', 'Data Gangguan berhasil dihapus!');
                 return redirect()->to(base_url('index.php/gangguan'));
             }
-        } else if(isset($_POST['verifikasi'])) {
-            $masuk = $gangguan->update($_POST['id'],
-            [
-                'tanggal_close' => date('Y-m-d'),
-                'status' => 1
-            ]);
+        } else if (isset($_POST['verifikasi'])) {
+            $masuk = $gangguan->update(
+                $_POST['id'],
+                [
+                    'tanggal_close' => date('Y-m-d'),
+                    'status' => 1
+                ]
+            );
             if ($masuk === false) {
                 $errors = $gangguan->errors();
                 session()->setFlashdata('error', $errors);
@@ -156,13 +191,19 @@ class Home extends BaseController
                 session()->setFlashdata('berhasil', 'Data Gangguan berhasil diverifikasi!');
                 return redirect()->to(base_url('index.php/gangguan'));
             }
-        }else {
+        } else {
             return view('pages/gangguan/index', $data);
         }
     }
 
     public function tambahGangguan()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $gangguan = new Gangguan_model();
         $uuid = service('uuid');
@@ -177,7 +218,7 @@ class Home extends BaseController
         ]);
         if ($masuk === false) {
             $errors = $gangguan->errors();
-            
+
             session()->setFlashdata('error', $errors);
             return redirect()->to(base_url('index.php/gangguan'));
         } else {
@@ -198,6 +239,13 @@ class Home extends BaseController
 
     public function paket()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
+
         helper(['session']);
         $paket = new Paket_model();
         $data = [
@@ -206,13 +254,13 @@ class Home extends BaseController
         ];
         if (isset($_POST['tambahBTN'])) {
             return view('pages/paket/tambah', $data);
-        } else if(isset($_POST['updateBTN'])) {
+        } else if (isset($_POST['updateBTN'])) {
             $dataAll = [
                 "judul" => "Paket",
                 "dataEdit" => $paket->find($_POST['id_paket']),
             ];
             return view('pages/paket/update', $dataAll);
-        } else if(isset($_POST['hapusBTN'])){
+        } else if (isset($_POST['hapusBTN'])) {
             $masuk = $paket->delete($_POST['id_paket']);
             if ($masuk === false) {
                 $errors = $paket->errors();
@@ -229,6 +277,12 @@ class Home extends BaseController
 
     public function tambahPaket()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $paket = new Paket_model();
         $uuid = service('uuid');
@@ -250,9 +304,15 @@ class Home extends BaseController
 
     public function updatePaket()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $paket = new Paket_model();
-        $masuk = $paket->update($_POST['id_paket'],[
+        $masuk = $paket->update($_POST['id_paket'], [
             "nama_paket" => $_POST['nama_paket']
         ]);
         if ($masuk === false) {
@@ -272,28 +332,35 @@ class Home extends BaseController
 
 
 
-    function randomizeImageName($filename) {
+    function randomizeImageName($filename)
+    {
         $extension = pathinfo($filename, PATHINFO_EXTENSION);
         $name = pathinfo($filename, PATHINFO_FILENAME);
-    
+
         $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
         $length = 10;
-    
+
         $randomString = '';
         for ($i = 0; $i < $length; $i++) {
             $randomString .= $characters[rand(0, strlen($characters) - 1)];
         }
-    
+
         $randomizedName = $randomString . '_' . $name . '.' . $extension;
-    
+
         return $randomizedName;
     }
-    
+
 
 
 
     public function perangkat()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $perangkat = new Perangkat_model();
         $data = [
@@ -302,16 +369,16 @@ class Home extends BaseController
         ];
         if (isset($_POST['tambahBTN'])) {
             return view('pages/perangkat/tambah', $data);
-        } else if(isset($_POST['updateBTN'])) {
+        } else if (isset($_POST['updateBTN'])) {
             $dataAll = [
                 "judul" => "Perangkat",
                 "dataEdit" => $perangkat->find($_POST['id_perangkat']),
             ];
             return view('pages/perangkat/update', $dataAll);
-        } else if(isset($_POST['hapusBTN'])){
+        } else if (isset($_POST['hapusBTN'])) {
             $prg = $perangkat->find($_POST['id_perangkat']);
-            if (file_exists('assets/img/perangkat/'.$prg['gambar'])) {
-                unlink('assets/img/perangkat/'.$prg['gambar']);
+            if (file_exists('assets/img/perangkat/' . $prg['gambar'])) {
+                unlink('assets/img/perangkat/' . $prg['gambar']);
             } else {
                 session()->setFlashdata('error', "Gambar gagal dihapus, file tidak ada!");
                 return redirect()->to(base_url('index.php/perangkat'));
@@ -332,6 +399,13 @@ class Home extends BaseController
 
     public function tambahPerangkat()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
+
         helper(['session']);
         $perangkat = new Perangkat_model();
         $uuid = service('uuid');
@@ -359,12 +433,18 @@ class Home extends BaseController
 
     public function updatePerangkat()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $perangkat = new Perangkat_model();
-        if($_FILES['gambar']){
+        if ($_FILES['gambar']) {
             $prg = $perangkat->find($_POST['id_perangkat']);
-            if (file_exists('assets/img/perangkat/'.$prg['gambar'])) {
-                unlink('assets/img/perangkat/'.$prg['gambar']);
+            if (file_exists('assets/img/perangkat/' . $prg['gambar'])) {
+                unlink('assets/img/perangkat/' . $prg['gambar']);
             } else {
                 session()->setFlashdata('error', "Gambar gagal dihapus, file tidak ada!");
                 return redirect()->to(base_url('index.php/perangkat'));
@@ -373,18 +453,18 @@ class Home extends BaseController
             $filename = $uploadedFile['name'];
             $randomizedName = $this->randomizeImageName($filename);
             move_uploaded_file($uploadedFile['tmp_name'], 'assets/img/perangkat/' . $randomizedName);
-            $masuk = $perangkat->update($_POST['id_perangkat'],[
+            $masuk = $perangkat->update($_POST['id_perangkat'], [
                 "nama_perangkat" => $_POST['nama_perangkat'],
                 "tipe_perangkat" => $_POST['tipe_perangkat'],
                 "gambar" => $randomizedName,
             ]);
-        }else{
-            $masuk = $perangkat->update($_POST['id_perangkat'],[
+        } else {
+            $masuk = $perangkat->update($_POST['id_perangkat'], [
                 "nama_perangkat" => $_POST['nama_perangkat'],
                 "tipe_perangkat" => $_POST['tipe_perangkat'],
             ]);
         }
-        
+
         if ($masuk === false) {
             $errors = $perangkat->errors();
             session()->setFlashdata('error', $errors);
@@ -399,6 +479,12 @@ class Home extends BaseController
 
     public function pelanggan()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $pelanggan = new Pelanggan_model();
         $bts = new Bts_model();
@@ -414,7 +500,7 @@ class Home extends BaseController
 
         if (isset($_POST['tambahBTN'])) {
             return view('pages/pelanggan/tambah', $data);
-        } else if(isset($_POST['hapusBTN'])){
+        } else if (isset($_POST['hapusBTN'])) {
             $masuk = $pelanggan->delete($_POST['id_pelanggan']);
             if ($masuk === false) {
                 $errors = $pelanggan->errors();
@@ -424,7 +510,7 @@ class Home extends BaseController
                 session()->setFlashdata('berhasil', 'Data Pelanggan berhasil dihapus!');
                 return redirect()->to(base_url('index.php/pelanggan'));
             }
-        } else if(isset($_POST['updateBTN'])) {
+        } else if (isset($_POST['updateBTN'])) {
             $dataAll = [
                 "judul" => "Pelanggan",
                 "dataEdit" => $pelanggan->find($_POST['id_pelanggan']),
@@ -440,6 +526,11 @@ class Home extends BaseController
 
     public function tambahPelanggan()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
         helper(['session']);
         $pelanggan = new Pelanggan_model();
         $uuid = service('uuid');
@@ -468,9 +559,15 @@ class Home extends BaseController
 
     public function updatePelanggan()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $pelanggan = new Pelanggan_model();
-        $masuk = $pelanggan->update($_POST['id_pelanggan'],[
+        $masuk = $pelanggan->update($_POST['id_pelanggan'], [
             "nama" => $_POST['nama'],
             "alamat" => $_POST['alamat'],
             "no_hp" => $_POST['no_hp'],
@@ -495,6 +592,12 @@ class Home extends BaseController
 
     public function level()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $level = new User_level_model();
         $data = [
@@ -504,7 +607,7 @@ class Home extends BaseController
 
         if (isset($_POST['tambahBTN'])) {
             return view('pages/level/tambah', $data);
-        } else if(isset($_POST['hapusBTN'])){
+        } else if (isset($_POST['hapusBTN'])) {
             $masuk = $level->delete($_POST['id_level']);
             if ($masuk === false) {
                 $errors = $level->errors();
@@ -514,7 +617,7 @@ class Home extends BaseController
                 session()->setFlashdata('berhasil', 'Data Level berhasil dihapus!');
                 return redirect()->to(base_url('index.php/level'));
             }
-        } else if(isset($_POST['updateBTN'])) {
+        } else if (isset($_POST['updateBTN'])) {
             $dataAll = [
                 "judul" => "Level Admin",
                 "dataEdit" => $level->find($_POST['id_level'])
@@ -527,6 +630,12 @@ class Home extends BaseController
 
     public function tambahLevel()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $level = new User_level_model();
         $uuid = service('uuid');
@@ -549,9 +658,14 @@ class Home extends BaseController
 
     public function updateLevel()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
         helper(['session']);
         $level = new User_level_model();
-        $masuk = $level->update($_POST['id_level'],[
+        $masuk = $level->update($_POST['id_level'], [
             "level" => $_POST['level'],
             "description" => $_POST['description']
         ]);
@@ -571,6 +685,12 @@ class Home extends BaseController
 
     public function admin()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $user = new Users_model();
         $level = new User_level_model();
@@ -582,7 +702,7 @@ class Home extends BaseController
 
         if (isset($_POST['tambahBTN'])) {
             return view('pages/admin/tambah', $data);
-        } else if(isset($_POST['hapusBTN'])){
+        } else if (isset($_POST['hapusBTN'])) {
             $masuk = $user->delete($_POST['id_user']);
             if ($masuk === false) {
                 $errors = $user->errors();
@@ -592,7 +712,7 @@ class Home extends BaseController
                 session()->setFlashdata('berhasil', 'Data Admin berhasil dihapus!');
                 return redirect()->to(base_url('index.php/admin'));
             }
-        } else if(isset($_POST['updateBTN'])) {
+        } else if (isset($_POST['updateBTN'])) {
             $dataAll = [
                 "judul" => "Admin",
                 "dataEdit" => $user->find($_POST['id_user']),
@@ -606,6 +726,12 @@ class Home extends BaseController
 
     public function tambahAdmin()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
+
         helper(['session']);
         $user = new Users_model();
         $level = new User_level_model();
@@ -632,10 +758,15 @@ class Home extends BaseController
 
     public function updateAdmin()
     {
+        $sesi = session()->has('sudahlogin');
+        if (!$sesi) {
+            return redirect()->to(base_url('index.php/login'));
+        }
+
         helper(['session']);
         $user = new Users_model();
         $level = new User_level_model();
-        $masuk = $user->update($_POST['id_user'],[
+        $masuk = $user->update($_POST['id_user'], [
             "email" => $_POST['email'],
             "password" => $_POST['password'],
             "nama" => $_POST['nama'],
@@ -650,5 +781,10 @@ class Home extends BaseController
             session()->setFlashdata('berhasil', 'Data User berhasil diubah!');
             return redirect()->to(base_url('index.php/admin'));
         }
+    }
+
+    public function loggedIn()
+    {
+        return view('pages/login');
     }
 }
