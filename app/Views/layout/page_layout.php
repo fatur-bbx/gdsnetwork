@@ -97,7 +97,7 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item <?= ($judul=="Admin" || $judul == "Level Admin") ? "active" : ""?>">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages"
                     aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-user"></i>
@@ -106,8 +106,8 @@
                 <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Kelola Admin</h6>
-                        <a class="collapse-item" href="login.html">Admin</a>
-                        <a class="collapse-item" href="login.html">Level</a>
+                        <a class="collapse-item <?= ($judul=="Admin") ? "active" : ""?>" href="login.html">Admin</a>
+                        <a class="collapse-item <?= ($judul=="Level Admin") ? "active" : ""?>" href="<?= base_url('index.php/level')?>">Level</a>
                     </div>
                 </div>
             </li>

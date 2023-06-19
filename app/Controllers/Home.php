@@ -7,6 +7,7 @@ use App\Models\Gangguan_model;
 use App\Models\Paket_model;
 use App\Models\Pelanggan_model;
 use App\Models\Perangkat_model;
+use App\Models\User_level_model;
 
 use function PHPUnit\Framework\isNull;
 
@@ -479,12 +480,87 @@ class Home extends BaseController
         ]);
         if ($masuk === false) {
             $errors = $pelanggan->errors();
-            dd($errors);die;
             session()->setFlashdata('error', $errors);
             return redirect()->to(base_url('index.php/pelanggan'));
         } else {
             session()->setFlashdata('berhasil', 'Data Pelanggan berhasil diubah!');
             return redirect()->to(base_url('index.php/pelanggan'));
+        }
+    }
+
+
+
+    // Pelanggan
+
+    public function level()
+    {
+        helper(['session']);
+        $level = new User_level_model();
+        $data = [
+            "judul" => "Level Admin",
+            "data_level" => $level->findAll()
+        ];
+
+        if (isset($_POST['tambahBTN'])) {
+            return view('pages/level/tambah', $data);
+        } else if(isset($_POST['hapusBTN'])){
+            $masuk = $level->delete($_POST['id_level']);
+            if ($masuk === false) {
+                $errors = $level->errors();
+                session()->setFlashdata('error', $errors);
+                return redirect()->to(base_url('index.php/level'));
+            } else {
+                session()->setFlashdata('berhasil', 'Data Level berhasil dihapus!');
+                return redirect()->to(base_url('index.php/level'));
+            }
+        } else if(isset($_POST['updateBTN'])) {
+            $dataAll = [
+                "judul" => "Level Admin",
+                "dataEdit" => $level->find($_POST['id_level'])
+            ];
+            return view('pages/level/update', $dataAll);
+        } else {
+            return view('pages/level/index', $data);
+        }
+    }
+
+    public function tambahLevel()
+    {
+        helper(['session']);
+        $level = new User_level_model();
+        $uuid = service('uuid');
+        $uuid4 = $uuid->uuid4();
+        $string = $uuid4->toString();
+        $masuk = $level->insert([
+            "id_level" => $string,
+            "level" => $_POST['level'],
+            "description" => $_POST['description']
+        ]);
+        if ($masuk === false) {
+            $errors = $level->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/level'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Level berhasil ditambahkan!');
+            return redirect()->to(base_url('index.php/level'));
+        }
+    }
+
+    public function updateLevel()
+    {
+        helper(['session']);
+        $level = new User_level_model();
+        $masuk = $level->update($_POST['id_level'],[
+            "level" => $_POST['level'],
+            "description" => $_POST['description']
+        ]);
+        if ($masuk === false) {
+            $errors = $level->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/level'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Level berhasil diubah!');
+            return redirect()->to(base_url('index.php/level'));
         }
     }
 }

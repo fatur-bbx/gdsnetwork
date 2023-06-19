@@ -5,12 +5,13 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class Pelanggan_model extends Model {
+    protected $uuidFields = ['id_pelanggan'];
     protected $table      = 'pelanggan';
     protected $primaryKey = 'id_pelanggan';
     protected $useSoftDeletes = false;
     protected $useTimestamps = false;
  
-    protected $allowedFields = ['nama','alamat','no_hp','email','id_bts','id_perangkat','tanggal','id_paket'];
+    protected $allowedFields = ['id_pelanggan','nama','alamat','no_hp','email','id_bts','id_perangkat','tanggal','id_paket'];
 
     protected $validationRules    = [
         'nama'     => 'required|min_length[3]',

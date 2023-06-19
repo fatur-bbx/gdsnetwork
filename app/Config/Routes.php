@@ -65,6 +65,13 @@ $routes->get('/pelanggan','Home::pelanggan');
 $routes->post('/pelanggan','Home::pelanggan');
 $routes->post('/pelanggan/tambahPelanggan','Home::tambahPelanggan');
 $routes->post('/pelanggan/updatePelanggan','Home::updatePelanggan');
+
+
+// Level Admin
+$routes->get('/level','Home::level');
+$routes->post('/level','Home::level');
+$routes->post('/level/tambahLevel','Home::tambahLevel');
+$routes->post('/level/updateLevel','Home::updateLevel');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

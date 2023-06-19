@@ -5,12 +5,13 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class User_level_model extends Model {
+    protected $uuidFields = ['id_level'];
     protected $table      = 'user_level';
     protected $primaryKey = 'id_level';
     protected $useSoftDeletes = false;
     protected $useTimestamps = false;
  
-    protected $allowedFields = ['level','description'];
+    protected $allowedFields = ['id_level','level','description'];
 
     protected $validationRules    = [
         'level'     => 'required|min_length[3]',
