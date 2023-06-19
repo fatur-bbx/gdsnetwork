@@ -7,9 +7,8 @@ use CodeIgniter\Model;
 class Pelanggan_model extends Model {
     protected $table      = 'pelanggan';
     protected $primaryKey = 'id_pelanggan';
- 
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
+    protected $useTimestamps = false;
  
     protected $allowedFields = ['nama','alamat','no_hp','email','id_bts','id_perangkat','tanggal','id_paket'];
 

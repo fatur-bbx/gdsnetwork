@@ -7,9 +7,8 @@ use CodeIgniter\Model;
 class Gangguan_model extends Model {
     protected $table      = 'gangguan';
     protected $primaryKey = 'id_gangguan';
- 
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
+    protected $useTimestamps = false;
  
     protected $allowedFields = ['id_pelanggan','laporan','tanggal_open','tanggal_close','status'];
 

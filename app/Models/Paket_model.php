@@ -7,9 +7,8 @@ use CodeIgniter\Model;
 class Paket_model extends Model {
     protected $table      = 'paket';
     protected $primaryKey = 'id_paket';
- 
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
+    protected $useTimestamps = false;
  
     protected $allowedFields = ['id_paket','nama_paket'];
 

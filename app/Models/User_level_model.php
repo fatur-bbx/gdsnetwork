@@ -7,9 +7,8 @@ use CodeIgniter\Model;
 class User_level_model extends Model {
     protected $table      = 'user_level';
     protected $primaryKey = 'id_level';
- 
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
+    protected $useTimestamps = false;
  
     protected $allowedFields = ['level','description'];
 

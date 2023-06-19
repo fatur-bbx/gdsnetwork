@@ -9,7 +9,7 @@
     <meta name="description" content="GDS Network Admin Dashboard">
     <meta name="author" content="Fatur Rizqy Alfarisz">
 
-    <title>GDS Network - Dashboard</title>
+    <title>GDS Network - <?= $judul ?></title>
 
     <!-- Custom fonts for this template-->
     <link href="<?= base_url('/assets/vendor/fontawesome-free/css/all.min.css') ?>" rel="stylesheet" type="text/css">
@@ -31,7 +31,7 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('') ?>">
                 <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-building"></i>
                 </div>
@@ -42,8 +42,8 @@
             <hr class="sidebar-divider my-0">
 
             <!-- Nav Item - Dashboard -->
-            <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+            <li class="nav-item <?= ($judul == "Dashboard") ? "active" : "" ?>">
+                <a class="nav-link" href="<?= base_url('') ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Halaman Utama</span></a>
             </li>
@@ -57,32 +57,32 @@
             </div>
 
             <!-- Nav Item - Pages Collapse Menu -->
-            <li class="nav-item">
-                <a class="nav-link" href="tables.html">
+            <li class="nav-item <?= ($judul == "BTS") ? "active" : "" ?>">
+                <a class="nav-link" href="<?= base_url('index.php/bts')?>">
                     <i class="fas fa-fw fa-network-wired"></i>
                     <span>BTS</span></a>
             </li>
 
             <!-- Nav Item - Utilities Collapse Menu -->
-            <li class="nav-item">
+            <li class="nav-item <?= ($judul == "Gangguan") ? "active" : "" ?>">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-hammer"></i>
                     <span>Gangguan</span></a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item <?= ($judul == "Paket") ? "active" : "" ?>">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-box"></i>
                     <span>Paket</span></a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item <?= ($judul == "Pelanggan") ? "active" : "" ?>">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-users"></i>
                     <span>Pelanggan</span></a>
             </li>
 
-            <li class="nav-item">
+            <li class="nav-item <?= ($judul == "Perangkat") ? "active" : "" ?>">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Perangkat</span></a>
@@ -168,7 +168,7 @@
                                 </a>
                                 <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Pengaturan
+                                  Pengaturan
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -235,18 +235,8 @@
     <script src="<?= base_url('/assets/vendor/jquery/jquery.min.js') ?>"></script>
     <script src="<?= base_url('/assets/vendor/bootstrap/js/bootstrap.bundle.min.js') ?>"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="<?= base_url('/assets/vendor/jquery-easing/jquery.easing.min.js') ?>"></script>
-
     <!-- Custom scripts for all pages-->
     <script src="<?= base_url('/assets/js/sb-admin-2.min.js') ?>"></script>
-
-    <!-- Page level plugins -->
-    <script src="<?= base_url('/assets/vendor/chart.js/Chart.min.js') ?>"></script>
-
-    <!-- Page level custom scripts -->
-    <script src="<?= base_url('/assets/js/demo/chart-area-demo.js') ?>"></script>
-    <script src="<?= base_url('/assets/js/demo/chart-pie-demo.js') ?>"></script>
 
 </body>
 

@@ -7,9 +7,8 @@ use CodeIgniter\Model;
 class Perangkat_model extends Model {
     protected $table      = 'perangkat';
     protected $primaryKey = 'id_perangkat';
- 
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
+    protected $useTimestamps = false;
  
     protected $allowedFields = ['nama_perangkat','tipe_perangkat','gambar'];
 

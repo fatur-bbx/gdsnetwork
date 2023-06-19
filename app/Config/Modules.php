@@ -72,5 +72,7 @@ class Modules extends BaseModules
         'registrars',
         'routes',
         'services',
+        'helpers',
+        'session'
     ];
 }

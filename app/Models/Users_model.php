@@ -7,9 +7,8 @@ use CodeIgniter\Model;
 class Users_model extends Model {
     protected $table      = 'users';
     protected $primaryKey = 'id_user';
- 
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = true;
+    protected $useSoftDeletes = false;
+    protected $useTimestamps = false;
  
     protected $allowedFields = ['email','password','nama','id_level'];
 

@@ -5,14 +5,13 @@ namespace App\Models;
 use CodeIgniter\Model;
 
 class Bts_model extends Model {
-    protected $table      = 'bts';
+    protected $table      = 'bts'; //tambah
+    protected $uuidFields = ['id_bts']; //tambah
     protected $primaryKey = 'id_bts';
+    protected $useSoftDeletes = false;
  
-    protected $returnType     = 'object';
-    protected $useSoftDeletes = true;
- 
-    protected $allowedFields = ['nama_bts','alamat'];
-
+    protected $allowedFields = ['id_bts','nama_bts','alamat']; //tambah
+    protected $useTimestamps = false;
     protected $validationRules    = [
         'nama_bts'     => 'required|min_length[3]',
         'alamat'        => 'required',
