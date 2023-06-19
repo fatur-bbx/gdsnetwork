@@ -6,6 +6,7 @@ use App\Models\Bts_model;
 use App\Models\Gangguan_model;
 use App\Models\Paket_model;
 use App\Models\Pelanggan_model;
+use App\Models\Perangkat_model;
 
 use function PHPUnit\Framework\isNull;
 
@@ -259,6 +260,136 @@ class Home extends BaseController
         } else {
             session()->setFlashdata('berhasil', 'Data BTS berhasil diubah!');
             return redirect()->to(base_url('index.php/paket'));
+        }
+    }
+
+
+
+
+    // Perangkat
+
+
+
+    function randomizeImageName($filename) {
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $name = pathinfo($filename, PATHINFO_FILENAME);
+    
+        $characters = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+        $length = 10;
+    
+        $randomString = '';
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+    
+        $randomizedName = $randomString . '_' . $name . '.' . $extension;
+    
+        return $randomizedName;
+    }
+    
+
+
+
+    public function perangkat()
+    {
+        helper(['session']);
+        $perangkat = new Perangkat_model();
+        $data = [
+            "judul" => "Perangkat",
+            "data_perangkat" => $perangkat->findAll(),
+        ];
+        if (isset($_POST['tambahBTN'])) {
+            return view('pages/perangkat/tambah', $data);
+        } else if(isset($_POST['updateBTN'])) {
+            $dataAll = [
+                "judul" => "Perangkat",
+                "dataEdit" => $perangkat->find($_POST['id_perangkat']),
+            ];
+            return view('pages/perangkat/update', $dataAll);
+        } else if(isset($_POST['hapusBTN'])){
+            $prg = $perangkat->find($_POST['id_perangkat']);
+            if (file_exists('assets/img/perangkat/'.$prg['gambar'])) {
+                unlink('assets/img/perangkat/'.$prg['gambar']);
+            } else {
+                session()->setFlashdata('error', "Gambar gagal dihapus, file tidak ada!");
+                return redirect()->to(base_url('index.php/perangkat'));
+            }
+            $masuk = $perangkat->delete($_POST['id_perangkat']);
+            if ($masuk === false) {
+                $errors = $perangkat->errors();
+                session()->setFlashdata('error', $errors);
+                return redirect()->to(base_url('index.php/perangkat'));
+            } else {
+                session()->setFlashdata('berhasil', 'Data Perangkat berhasil dihapus!');
+                return redirect()->to(base_url('index.php/perangkat'));
+            }
+        } else {
+            return view('pages/perangkat/index', $data);
+        }
+    }
+
+    public function tambahPerangkat()
+    {
+        helper(['session']);
+        $perangkat = new Perangkat_model();
+        $uuid = service('uuid');
+        $uuid4 = $uuid->uuid4();
+        $string = $uuid4->toString();
+        $uploadedFile = $_FILES['gambar'];
+        $filename = $uploadedFile['name'];
+        $randomizedName = $this->randomizeImageName($filename);
+        move_uploaded_file($uploadedFile['tmp_name'], 'assets/img/perangkat/' . $randomizedName);
+        $masuk = $perangkat->insert([
+            "id_perangkat" => $string,
+            "nama_perangkat" => $_POST['nama_perangkat'],
+            "tipe_perangkat" => $_POST['tipe_perangkat'],
+            "gambar" => $randomizedName,
+        ]);
+        if ($masuk === false) {
+            $errors = $perangkat->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/perangkat'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Perangkat berhasil ditambahkan!');
+            return redirect()->to(base_url('index.php/perangkat'));
+        }
+    }
+
+    public function updatePerangkat()
+    {
+        helper(['session']);
+        $perangkat = new Perangkat_model();
+        if($_FILES['gambar']){
+            $prg = $perangkat->find($_POST['id_perangkat']);
+            if (file_exists('assets/img/perangkat/'.$prg['gambar'])) {
+                unlink('assets/img/perangkat/'.$prg['gambar']);
+            } else {
+                session()->setFlashdata('error', "Gambar gagal dihapus, file tidak ada!");
+                return redirect()->to(base_url('index.php/perangkat'));
+            }
+            $uploadedFile = $_FILES['gambar'];
+            $filename = $uploadedFile['name'];
+            $randomizedName = $this->randomizeImageName($filename);
+            move_uploaded_file($uploadedFile['tmp_name'], 'assets/img/perangkat/' . $randomizedName);
+            $masuk = $perangkat->update($_POST['id_perangkat'],[
+                "nama_perangkat" => $_POST['nama_perangkat'],
+                "tipe_perangkat" => $_POST['tipe_perangkat'],
+                "gambar" => $randomizedName,
+            ]);
+        }else{
+            $masuk = $perangkat->update($_POST['id_perangkat'],[
+                "nama_perangkat" => $_POST['nama_perangkat'],
+                "tipe_perangkat" => $_POST['tipe_perangkat'],
+            ]);
+        }
+        
+        if ($masuk === false) {
+            $errors = $perangkat->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/perangkat'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Perangkat berhasil diubah!');
+            return redirect()->to(base_url('index.php/perangkat'));
         }
     }
 }

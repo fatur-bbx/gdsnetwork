@@ -51,6 +51,13 @@ $routes->get('/paket','Home::paket');
 $routes->post('/paket','Home::paket');
 $routes->post('/paket/tambahPaket','Home::tambahPaket');
 $routes->post('/paket/updatePaket','Home::updatePaket');
+
+
+// Perangkat
+$routes->get('/perangkat','Home::perangkat');
+$routes->post('/perangkat','Home::perangkat');
+$routes->post('/perangkat/tambahPerangkat','Home::tambahPerangkat');
+$routes->post('/perangkat/updatePerangkat','Home::updatePerangkat');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

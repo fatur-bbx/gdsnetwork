@@ -83,7 +83,7 @@
             </li>
 
             <li class="nav-item <?= ($judul == "Perangkat") ? "active" : "" ?>">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="<?= base_url('index.php/perangkat')?>">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Perangkat</span></a>
             </li>
