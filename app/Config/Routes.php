@@ -44,8 +44,13 @@ $routes->post('/bts/updateBTS','Home::updateBTS');
 $routes->get('/gangguan','Home::gangguan');
 $routes->post('/gangguan','Home::gangguan');
 $routes->post('/gangguan/tambahGangguan','Home::tambahGangguan');
-$routes->post('/gangguan/updateGangguan','Home::updateGangguan');
 
+
+// Paket
+$routes->get('/paket','Home::paket');
+$routes->post('/paket','Home::paket');
+$routes->post('/paket/tambahPaket','Home::tambahPaket');
+$routes->post('/paket/updatePaket','Home::updatePaket');
 /*
  * --------------------------------------------------------------------
  * Additional Routing

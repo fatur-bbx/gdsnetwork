@@ -71,7 +71,7 @@
             </li>
 
             <li class="nav-item <?= ($judul == "Paket") ? "active" : "" ?>">
-                <a class="nav-link" href="tables.html">
+                <a class="nav-link" href="<?= base_url('index.php/paket')?>">
                     <i class="fas fa-fw fa-box"></i>
                     <span>Paket</span></a>
             </li>

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Models\Bts_model;
 use App\Models\Gangguan_model;
+use App\Models\Paket_model;
 use App\Models\Pelanggan_model;
 
 use function PHPUnit\Framework\isNull;
@@ -179,6 +180,85 @@ class Home extends BaseController
         } else {
             session()->setFlashdata('berhasil', 'Data Gangguan berhasil ditambahkan!');
             return redirect()->to(base_url('index.php/gangguan'));
+        }
+    }
+
+
+
+
+
+    // Paket
+
+
+
+
+
+    public function paket()
+    {
+        helper(['session']);
+        $paket = new Paket_model();
+        $data = [
+            "judul" => "Paket",
+            "data_paket" => $paket->findAll(),
+        ];
+        if (isset($_POST['tambahBTN'])) {
+            return view('pages/paket/tambah', $data);
+        } else if(isset($_POST['updateBTN'])) {
+            $dataAll = [
+                "judul" => "Paket",
+                "dataEdit" => $paket->find($_POST['id_paket']),
+            ];
+            return view('pages/paket/update', $dataAll);
+        } else if(isset($_POST['hapusBTN'])){
+            $masuk = $paket->delete($_POST['id_paket']);
+            if ($masuk === false) {
+                $errors = $paket->errors();
+                session()->setFlashdata('error', $errors);
+                return redirect()->to(base_url('index.php/paket'));
+            } else {
+                session()->setFlashdata('berhasil', 'Data Paket berhasil dihapus!');
+                return redirect()->to(base_url('index.php/paket'));
+            }
+        } else {
+            return view('pages/paket/index', $data);
+        }
+    }
+
+    public function tambahPaket()
+    {
+        helper(['session']);
+        $paket = new Paket_model();
+        $uuid = service('uuid');
+        $uuid4 = $uuid->uuid4();
+        $string = $uuid4->toString();
+        $masuk = $paket->insert([
+            "id_paket" => $string,
+            "nama_paket" => $_POST['nama_paket']
+        ]);
+        if ($masuk === false) {
+            $errors = $paket->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/paket'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data Paket berhasil ditambahkan!');
+            return redirect()->to(base_url('index.php/paket'));
+        }
+    }
+
+    public function updatePaket()
+    {
+        helper(['session']);
+        $paket = new Paket_model();
+        $masuk = $paket->update($_POST['id_paket'],[
+            "nama_paket" => $_POST['nama_paket']
+        ]);
+        if ($masuk === false) {
+            $errors = $paket->errors();
+            session()->setFlashdata('error', $errors);
+            return redirect()->to(base_url('index.php/paket'));
+        } else {
+            session()->setFlashdata('berhasil', 'Data BTS berhasil diubah!');
+            return redirect()->to(base_url('index.php/paket'));
         }
     }
 }
